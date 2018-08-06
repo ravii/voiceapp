@@ -1,0 +1,12 @@
+package com.myapp.voiceapp;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class VoiceAppApplication {
+        
+	public static void main(String[] args) {
+		SpringApplication.run(VoiceAppApplication.class, args);
+	}
+}

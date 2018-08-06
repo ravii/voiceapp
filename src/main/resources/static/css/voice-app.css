@@ -1,0 +1,41 @@
+
+header + .container-fluid {
+  padding-top: -80px;
+  margin-top: 80px;
+}
+main.container-fluid {
+  padding-bottom: 1.5rem;
+}
+.list-group-item p {
+  margin-bottom: 0;
+}
+
+.bg-company-red {
+    background-color: darkred;
+}
+
+.card-layout {
+	background-color: #EDEEEB;
+ 	
+}
+.align{
+float:right
+}
+
+
+.cat-filter {
+		width: 20px;
+}
+
+.btn-group {
+    bottom: 15px;
+    position: relative;
+    top: 15px;
+    float:right;
+
+}
+
+.btn-block {
+	border-color: gray;
+	border-width: 1px;
+}

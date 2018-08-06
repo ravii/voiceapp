@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+<body>
+
+	<div th:replace="fragments :: header"></div>
+	<main class="container-fluid">
+
+	<div class="row">
+		<div class="col text-left">
+			Filter By Category :  
+			<select name="categories" id="categories" class="form-control">
+                        <option th:each="category : ${categories}"
+                                th:value="${category.uid}"
+                                th:text="${category.name}"
+                                ></option>
+           	</select>
+		</div>
+		<div class="col text-right">	
+			<a th:href="@{/queries/create}" class="btn btn-success mb-3">Create Query</a>
+						<a th:href="@{/categories/create}" class="btn btn-success mb-3">Create Category</a>
+			
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col">
+			<table class="table table-hover">
+				<thead class="thead-light">
+					<tr>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="query : ${queries}">
+						<td class="card-layout">
+
+
+							<div class="card w-100">
+								<div class="card-body">
+
+
+									<div class="row">
+										<div class="col">
+											<h1 class="card-title"
+												th:href="@{${'/queries/detail/'+query.uid}}"
+												th:text="${query.title}"></h1>
+										</div>
+
+
+									<div th:if="${#authentication.name.equals(query.userId)}">
+										
+											<div class="d-flex flex-row-reverse">
+													<div class="p-2 ">
+														<form th:action="@{${'/queries/delete/'+query.uid}}"
+															class="col text-right" method="post">
+															<button>
+																<i class="float-right fa fa-trash fa-2x"
+																	style="color: #009933; text-align: center;"
+																	aria-hidden="true"></i>
+															</button>
+														</form> 
+													</div>
+													<div class="p-2">
+														<a href="#" th:href="@{${'/queries/update/'+query.uid}}"><i
+															class="float-right fa fa-edit fa-2x"
+															style="color: #009933; text-align: center;"
+															aria-hidden="true"></i></a>
+													</div>
+													
+		 										</div>
+										</div>
+
+
+									</div>
+	
+
+									 
+										<div class="row">
+										
+										<div class="col">
+											<form th:action="@{${'/queries/updateRatingCount/'+query.uid+'?type=option_1'}}" method="post">
+													
+											<button th:text="${query.option_1} + ' ~ '+${query.option_1_count}+' (votes)'"
+											class="btn btn-default btn-sm btn-block">Option1</button>
+											</form>
+										</div>
+										<div class="col">
+										<form th:action="@{${'/queries/updateRatingCount/'+query.uid+'?type=option_2'}}" method="post">
+											<button th:text="${query.option_2} + ' ~ '+${query.option_2_count}+' (votes)'"
+											class="btn btn-default btn-sm btn-block">Option2</button>
+										</form>
+										</div>
+										
+										
+										</div>
+										
+									 <a class="align" th:text="${{query.startDate}}">Posted on:
+									</a> <a class="align">Posted on:</a>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	</main>
+
+	<div th:insert="fragments :: scripts"></div>
+
+</body>
+</html>
