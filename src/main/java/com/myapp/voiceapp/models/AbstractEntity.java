@@ -3,6 +3,9 @@ package com.myapp.voiceapp.models;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
 import java.util.Objects;
 
 
@@ -27,6 +30,13 @@ public abstract class AbstractEntity {
         if (o == null || getClass() != o.getClass()) return false;
         AbstractEntity that = (AbstractEntity) o;
         return uid == that.uid;
+    }
+    
+    @Override
+    public String toString() {
+    	
+    	return ReflectionToStringBuilder.toString(this);
+    	
     }
 
     @Override

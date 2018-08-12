@@ -6,11 +6,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
@@ -41,7 +43,7 @@ public class Query extends AbstractEntity {
     
     private int option_2_count;	
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private final List<Category> categories = new ArrayList<>();
 
     public Query(String title, String option_1, String option_2, Date startDate, String s) {}

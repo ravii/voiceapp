@@ -6,15 +6,20 @@
 	<div th:replace="fragments :: header"></div>
 	<main class="container-fluid">
 
-	<div class="row">
-		<div class="col text-left">
+	<div id="search" class="row">
+		<div class="col text-left form-inline">
 			Filter By Category :  
-			<select name="categories" id="categories" class="form-control">
-                        <option th:each="category : ${categories}"
-                                th:value="${category.uid}"
-                                th:text="${category.name}"
-                                ></option>
-           	</select>
+			<form style="display:inline-block" th:action="@{/queries/search}" th:object="${categories}" method="get">
+ 			
+					<select name="categories" id="categories" class="form-control">
+							<option>ALL</option>
+	                        <option th:each="category : ${categories}"
+	                                th:value="${category.uid}"
+	                                th:text="${category.name}"
+	                                ></option>
+	           		</select>
+             	<input type="submit" class="btn btn-success mb-3" value="Search"/>
+            </form>
 		</div>
 		<div class="col text-right">	
 			<a th:href="@{/queries/create}" class="btn btn-success mb-3">Create Query</a>

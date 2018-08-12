@@ -9,8 +9,6 @@ import java.util.List;
 @Entity
 public class Category extends AbstractEntity {
 
-    private int id;
-
     @Size(min = 3, message = "Category names must be at least 3 characters long")
     private String name;
 

@@ -16,6 +16,8 @@ import com.myapp.voiceapp.repositories.CategoryRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +39,27 @@ public class QueryController extends AbstractBaseController {
         model.addAttribute("categories", categoryRepository.findAll());
         return "queries/list";
     }
+    
+    @GetMapping(value="search")
+    public String FilterByCategories(Model model,@RequestParam(name = "categories") String categoryId) {
+    	
+    	List<Integer> ids = new ArrayList<>();
+    	List<Query> allQueries = new ArrayList<>();
+    	if(categoryId.equalsIgnoreCase("ALL")) {
+    		allQueries = queryRepository.findAll();
+    	} else {
+    		ids.add(new Integer(categoryId));
+    		allQueries = queryRepository.findByCategories(ids);
+    	}
+    	
+        
+        System.out.println("allQueries.........."+allQueries);
+        model.addAttribute("queries", allQueries);
+        model.addAttribute("categories", categoryRepository.findAll());
+        return "queries/list"; 
+    }
+    
+    	
 
     @GetMapping(value = "create")
     public String displayCreateEventForm(Model model, HttpServletRequest request) {
@@ -50,19 +73,16 @@ public class QueryController extends AbstractBaseController {
     @PostMapping(value = "create")
     public String processCreateEventForm(@Valid @ModelAttribute Query query,
                                          Errors errors,
-                                         @RequestParam(name = "categories", required = false) List<Integer> volunteerUids) {
+                                         @RequestParam(name = "categories", required = false) List<Integer> categoryIds) {
 
         if (errors.hasErrors())
             return "queries/create-or-update";
 
-        syncVolunteerLists(volunteerUids, query.getCategories());
+        syncCategoryLists(categoryIds, query.getCategories());
 
         User usr = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-         	
         query.setUserId(usr.getUsername());
-        
         queryRepository.save(query);
-        
         return "redirect:/queries";
     }
 
@@ -117,12 +137,14 @@ public class QueryController extends AbstractBaseController {
     public String processUpdateEventForm(@Valid @ModelAttribute Query query,
                                          RedirectAttributes model,
                                          Errors errors,
-                                         @RequestParam(name = "categories", required = false) List<Integer> volunteerUids) {
+                                         @RequestParam(name = "categories", required = false) List<Integer> categories) {
 
         if (errors.hasErrors())
             return "queries/create-or-update";
 
-        syncVolunteerLists(volunteerUids, query.getCategories());
+        syncCategoryLists(categories, query.getCategories());
+        User usr = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        query.setUserId(usr.getUsername());
         queryRepository.save(query);
         model.addFlashAttribute(MESSAGE_KEY, "success|Updated queries: " + query.getTitle());
 
@@ -143,7 +165,7 @@ public class QueryController extends AbstractBaseController {
         }
     }
 
-    private void syncVolunteerLists(List<Integer> volunteerUids, List<Category> categories) {
+    private void syncCategoryLists(List<Integer> volunteerUids, List<Category> categories) {
 
         if (volunteerUids == null)
             return;
