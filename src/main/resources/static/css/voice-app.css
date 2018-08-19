@@ -39,3 +39,11 @@ float:right
 	border-color: gray;
 	border-width: 1px;
 }
+
+.box {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .box>* {
+        flex: 1 1 60px;
+    }

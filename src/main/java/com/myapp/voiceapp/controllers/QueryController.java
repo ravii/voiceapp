@@ -111,7 +111,12 @@ public class QueryController extends AbstractBaseController {
     		  query.setOption_1_count(query.getOption_1_count()+1);
     	  } else if(type!=null && type.equals("option_2")) {
     		  query.setOption_2_count(query.getOption_2_count()+1);
+    	  } else if(type!=null && type.equals("likeCount")) {
+    		  query.setLikeCount(query.getLikeCount()+1);
+    	  } else if(type!=null && type.equals("dislikeCount")) {
+    		  query.setDislikeCount(query.getDislikeCount()+1);
     	  }
+    	  
     	  queryRepository.save(query);
     	  return "redirect:/queries";
     }

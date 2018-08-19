@@ -36,6 +36,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.2.RELEASE')
 	runtime('org.springframework.boot:spring-boot-devtools')
+    compile('org.springframework.social:spring-social-twitter:1.1.0.RELEASE')
 //	runtime('mysql:mysql-connector-java')
 	compile('com.h2database:h2')
 	testCompile('org.springframework.security:spring-security-test')

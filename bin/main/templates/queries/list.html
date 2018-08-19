@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head">
-<body>
-
+  
 	<div th:replace="fragments :: header"></div>
 	<main class="container-fluid">
 
@@ -102,6 +101,40 @@
 										
 									 <a class="align" th:text="${{query.startDate}}">Posted on:
 									</a> <a class="align">Posted on:</a>
+								</div>
+								<div class="card-footer">
+									<div class="row">
+										<div class="column">
+											<form th:action="@{${'/queries/updateRatingCount/'+query.uid+'?type=likeCount'}}" method="post">
+												<button>
+																<i class="float-right fa fa-thumbs-up fa-1x"
+																	style="color: blue; text-align: center;"
+																	aria-hidden="true">										
+																	<span th:text="${query.likeCount}"></span>		
+																</i>
+												</button>
+ 										</form>
+										</div>
+										<div class="column">
+											<form th:action="@{${'/queries/updateRatingCount/'+query.uid+'?type=dislikeCount'}}" method="post">
+												<button>
+																<i class="float-right fa fa-thumbs-down fa-1x"
+																	style="color: red; text-align: center;"
+																	aria-hidden="true">										
+																	<span th:text="${query.dislikeCount}"></span>		
+																</i>
+												</button>
+ 										</form>
+										</div>
+										  <div class="column">
+ 												<button>
+																<i class="float-right fa fa-share-alt fa-1x"
+																	style="color: red; text-align: center;"
+																	aria-hidden="true">										
+ 																</i>
+												</button>
+ 										</div>  
+ 										</div>
 								</div>
 							</div>
 						</td>

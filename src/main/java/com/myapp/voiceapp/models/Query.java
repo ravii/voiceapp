@@ -42,6 +42,10 @@ public class Query extends AbstractEntity {
     private int option_1_count;
     
     private int option_2_count;	
+    
+    private int likeCount;
+    
+    private int dislikeCount;
 
     @ManyToMany(cascade = CascadeType.ALL)
     private final List<Category> categories = new ArrayList<>();
@@ -122,6 +126,22 @@ public class Query extends AbstractEntity {
         this.userId = userId;
     }
  
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
+	public int getDislikeCount() {
+		return dislikeCount;
+	}
+
+	public void setDislikeCount(int dislikeCount) {
+		this.dislikeCount = dislikeCount;
+	}
 
 	public int getOption_1_count() {
 		return option_1_count;
