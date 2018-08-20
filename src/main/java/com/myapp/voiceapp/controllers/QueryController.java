@@ -139,19 +139,41 @@ public class QueryController extends AbstractBaseController {
     }
 
     @PostMapping(value = "update/{uid}")
-    public String processUpdateEventForm(@Valid @ModelAttribute Query query,
+    public String processUpdateEventForm(@PathVariable int uid, @Valid @ModelAttribute Query reqQuery,
                                          RedirectAttributes model,
                                          Errors errors,
                                          @RequestParam(name = "categories", required = false) List<Integer> categories) {
 
         if (errors.hasErrors())
             return "queries/create-or-update";
-
-        syncCategoryLists(categories, query.getCategories());
+        
         User usr = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        query.setUserId(usr.getUsername());
-        queryRepository.save(query);
-        model.addFlashAttribute(MESSAGE_KEY, "success|Updated queries: " + query.getTitle());
+
+        
+        Optional<Query> queryObj = queryRepository.findById(uid);
+        if(queryObj.isPresent()) {
+        Query dbQuery  =  queryObj.get();
+        dbQuery.setOption_1(reqQuery.getOption_1());
+        dbQuery.setOption_2(reqQuery.getOption_2());
+        dbQuery.setStartDate(reqQuery.getStartDate());
+        dbQuery.setTitle(reqQuery.getTitle());
+        dbQuery.setUserId(usr.getUsername());
+        
+        
+        List<Category> newCategoryList = categoryRepository.findAllById(categories);
+        dbQuery.getCategories().clear();
+        
+        dbQuery.getCategories().addAll(newCategoryList);
+        
+ 
+       //  syncCategoryLists(categories, reqQuery.getCategories());
+        
+        dbQuery.getCategories().addAll(reqQuery.getCategories());
+         
+        queryRepository.save(dbQuery);
+         model.addFlashAttribute(MESSAGE_KEY, "success|Updated queries: " + dbQuery.getTitle());
+        
+        }
 
         return "redirect:/queries";
     }
@@ -170,13 +192,13 @@ public class QueryController extends AbstractBaseController {
         }
     }
 
-    private void syncCategoryLists(List<Integer> volunteerUids, List<Category> categories) {
+    private void syncCategoryLists(List<Integer> catUids, List<Category> categories) {
 
-        if (volunteerUids == null)
+        if (catUids == null)
             return;
 
-        List<Category> newCategoryList = categoryRepository.findAllById(volunteerUids);
-        categories.removeIf(v -> volunteerUids.contains(v.getUid()));
+        List<Category> newCategoryList = categoryRepository.findAllById(catUids);
+        categories.removeIf(v -> catUids.contains(v.getUid()));
         categories.addAll(newCategoryList);
     }
 
